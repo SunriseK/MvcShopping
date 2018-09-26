@@ -1,0 +1,50 @@
+﻿@*@model IEnumerable<MvcShopping.Models.Cart>*@
+@model List<MvcShopping.Models.Cart>
+
+@{
+    ViewBag.Title = "購物車清單";
+}
+
+@{ 
+    var ajaxOption = new AjaxOptions()
+    {
+        OnSuccess = "RemoveCartSuccess",
+        OnFailure = "RemoveCartFailure",
+        Confirm = "您確定要從購物車刪除這個商品嗎?",
+        HttpMethod = "Post"
+    };
+
+}
+
+@section script {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    function RemoveCartSuccess() {
+        alert('移除購物車成功');
+        location.reload();
+    }
+    function RemoveCartFailure(xhr) {
+        alert('移除購物車失敗 (HTTP 狀態碼:' + xhr.status + ')');
+    }
+    </script>
+    }
+
+<h2>購物車清單</h2>
+
+@using (Html.BeginForm("UpdateAmount", "Cart"))
+{
+    <table>
+        <tr>
+            <th>產品名稱</th>
+            <th>單價</th>
+            <th>數量</th>
+            <th>小計</th>
+            <th></th>
+        </tr>
+        @{ int subTotal = 0;}
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            //計算購買商品總價
+        }
+    </table>
+}

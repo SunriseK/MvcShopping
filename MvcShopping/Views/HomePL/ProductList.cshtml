@@ -1,0 +1,67 @@
+﻿@model IEnumerable<MvcShopping.Models.Product>
+
+@{
+    ViewBag.Title = "ProductList";
+
+    var ajaxOption = new AjaxOptions()
+    {
+        OnSuccess = "AddToCartSuccess",
+        OnFailure = "AddToCartFailure",
+        HttpMethod = "Post"
+    };
+}
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function AddToCartSuccess() {
+            alert('加入購物車成功');
+        }
+
+        function AddToCartFailure(xhr) {
+            alert('加入購物車失敗 (HTTP 狀態碼: ' + xhr.status + ')');
+        }
+    </script>
+}
+
+@*這邊的model故意使用IEnumerable泛型，當要顯示MvcShopping.Models.Product這個型別的顯示名稱，
+也就是讓這段文字改由Product這個資料模型類別上套用的[DisplayName]屬性值來輸出時，
+如果用IEnumerable泛型型別的話，就必須先將Model物件先透過ToList()方法轉成List泛型物件，
+這時才能透過所以存取子的方式來指定Product集合物件中的第一筆資料的型別。*@
+<h2>@Html.DisplayNameFor(model => model.ToList()[0])</h2>
+
+<h3>您正在瀏覽[@Model.First().ProductCategory.Name]分類的商品:</h3>
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            加入購物車
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.Name,"ProductDetail",new { id = item.Id })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Ajax.ActionLink("加入購物車","AddToCart","Cart",new { ProductId=item.Id},ajaxOption)
+        </td>
+    </tr>
+}
+
+</table>

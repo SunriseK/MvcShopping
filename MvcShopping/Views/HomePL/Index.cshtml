@@ -1,0 +1,19 @@
+﻿ @*@model IEnumerable<MvcShopping.Models.ProductCategory>*@
+@*如果此處使用IEnumerable泛型型別的話就無法使用model[0]這種方式來指定ProductCatgory集合物件中第一筆資料的型別*@
+@model List<MvcShopping.Models.ProductCategory>
+
+@{
+    ViewBag.Title = "Index123";
+}
+
+<h2>@Html.DisplayNameFor(model => model[0]) </h2>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            <!--  <a href="SameController/ActionName/1">顯示文字</a> -->
+            @Html.ActionLink(item.Name,"ProductList",new { id = item.Id})
+        </li>
+    }
+</ul>

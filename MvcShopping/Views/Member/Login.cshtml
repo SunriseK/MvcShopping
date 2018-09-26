@@ -1,0 +1,73 @@
+﻿@model MvcShopping.Models.MemberLoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>MemberLoginViewModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" }})
+                @*@Html.TextBoxFor(model => model.email,new { data_val_email ="請輸入Email地址"})*@
+                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $("#@Html.IdFor(model => model.email)").rules("add", { messages: { email: "請輸入Email地址123" } });
+        });
+
+    </script>
+
+    @*也可以直接在網頁中複寫原本在jQuery Validate的預設錯誤訊息:*@
+    <script>
+        $.validator.messages = {
+            required: "This field is required.",
+            remote: "Please fix this field.",
+            email: "請輸入Email地址",
+            url: "Please enter a valid URL.",
+            date: "Please enter a valid date.",
+            dateISO: "Please enter a valid date (ISO).",
+            number: "Please enter a valid number.",
+            digits: "Please enter only digits.",
+            creditcard: "Please enter a valid credit card number.",
+            equalTo: "Please neter the same value again.",
+            accept: "Please enter a value with a valid extension.",
+            maxlength: $.validator.format("Please enter no more than {0} characters."),
+            minlength: $.validator.format("Please enter at least {0} characters."),
+            rangelength: $.validator.format("Please enter a value between {0} and {1} characters long."),
+            range: $.validator.format("Please enter a value between {0} and {1}."),
+            max: $.validator.format("Please enter a value less than or equal to {0}."),
+            min: $.validator.format("Please enter a value greater than or equal to {0}.")
+        };
+    </script>
+}
